@@ -20,6 +20,14 @@ const tabs: { label: string; value: Tab }[] = [
 export default function FilmGallery({ film }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("stills");
 
+  const hasGalleryMedia = Object.values(film.gallery).some(
+    (items) => items.length > 0,
+  );
+
+  if (!hasGalleryMedia) {
+    return null;
+  }
+
   const media = film.gallery[activeTab];
 
   return (

@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 export default function OurTeam() {
   return (
@@ -41,17 +39,7 @@ export default function OurTeam() {
               connecting stories with their intended audiences.
             </p>
 
-            <Link
-              href="/about/ajit-mukundan"
-              className="group mt-8 inline-flex min-h-[52px] items-center gap-3 bg-[#e69a2d] px-7 text-sm font-medium text-white transition-colors hover:bg-[#d88b21]"
-            >
-              Read biography
-
-              <ArrowRight
-                size={18}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
+            {/* Read biography button hidden until the biography page is ready. */}
           </div>
         </div>
       </div>

@@ -61,21 +61,21 @@ const films: Film[] = [
   },
   {
     title: "Hiraeth",
-    year: "",
-    type: "Drama",
-    duration: "",
+    year: "2020",
+    type: "Series / Drama",
+    duration: "7-part mini-series",
     image: "/images/filmography/hiraeth.jpg",
     href: "/filmography/hiraeth",
     categories: ["drama"],
   },
   {
     title: "Not Tonight",
-    year: "",
-    type: "Short",
-    duration: "",
+    year: "2024",
+    type: "Feature / Drama",
+    duration: "74 min",
     image: "/images/filmography/not-tonight.jpg",
     href: "/filmography/not-tonight",
-    categories: ["short"],
+    categories: ["drama"],
   },
 ];
 

@@ -138,13 +138,15 @@ export const films: Film[] = [
     tagline: "Every choice leaves a mark.",
 
     synopsis:
-      "A story about relationships, identity and the consequences that follow the decisions we make.",
+      "A staunch pro-life advocate and a steadfast pro-choice activist confront life and relationships anew when challenged by the choices they have made.",
 
-    director: "",
-    writer: "",
-    music: "",
-    producers: "",
+    director: "Amir Jaffer",
+    writer: "Puneet",
+    music: "Aalap Desai",
+    producers: "Ajit Mukundan",
     language: "English",
+
+    cast: "Jackie Dallas, Puneet, Sherill Quinn",
 
     imdbUrl: "https://www.imdb.com/title/tt10729444/",
 
@@ -268,6 +270,100 @@ export const films: Film[] = [
           alt: "Arrangement event",
         },
       ],
+    },
+  },
+  {
+    slug: "chances",
+    title: "Chances",
+    year: "2018",
+    type: "Short / Drama",
+    duration: "17 min",
+
+    heroImage: "/images/filmography/chances.jpg",
+
+    tagline: "Love will always find a way.",
+
+    synopsis:
+      "A middle-aged professor finds himself unexpectedly facing circumstances that challenge his ideas about the norms of love and life. He resists a relationship with someone much younger, but love has other plans.",
+
+    director: "Amir Jaffer",
+    writer: "Joyce Lee Kinney",
+    music: "Aalap Desai",
+    producers: "Ajit Mukundan, Amir Jaffer",
+    language: "English",
+
+    cast: "Puneet, Nadia Nazir, Marvina Reasons",
+
+    imdbUrl: "https://www.imdb.com/title/tt7642934/",
+
+    gallery: {
+      stills: [],
+      bts: [],
+      events: [],
+    },
+  },
+  {
+    slug: "hiraeth",
+    title: "Hiraeth",
+    year: "2020",
+    type: "Series / Drama",
+    duration: "7-part mini-series",
+
+    heroImage: "/images/filmography/hiraeth.jpg",
+
+    tagline: "Where do we belong?",
+
+    synopsis:
+      "Hiraeth weaves together the experiences of immigrants living in the United States. Its stories range from ordinary to unusual and from mundane to supernatural as a diverse group of people navigate love, pain, discrimination, racism and belonging.",
+
+    director: "Amir Jaffer",
+    writer:
+      "Amir Jaffer, MK Ansari (additional material), Barry Gottlieb (additional material)",
+    music: "Aalap Desai",
+    producers: "Cinema 3.0",
+    language: "English",
+
+    cast:
+      "Puneet, Isaac Benjamin, Sherill Quinn, Maaz Ali, David Massil, Rebecca Faiola, Nikki Chawla, Jack Jaco Pitchon, Joyce Lee Kinney, Anthony James Rummel, Aditya Thakur, Emily Corbo, Radhika Rao, Teresa Perez, MK Ansari, Naren Srinivasan, Barry Gottlieb, Manju Chattopadhyay, Anthony Puah, Nadia Nazir",
+
+    imdbUrl: "https://www.imdb.com/title/tt10449320/",
+    trailerUrl: "https://vimeo.com/457969452",
+
+    gallery: {
+      stills: [],
+      bts: [],
+      events: [],
+    },
+  },
+  {
+    slug: "not-tonight",
+    title: "Not Tonight",
+    year: "2024",
+    type: "Feature / Drama",
+    duration: "74 min",
+
+    heroImage: "/images/filmography/not-tonight.jpg",
+
+    tagline: "One night changes everything.",
+
+    synopsis:
+      "Tech titan Amar and his wife, Amy, return late one night from a party. Feeling diminished by his wife, Amar descends into an unusually sour mood and persuades their old friend Mike to come over. The evening spirals into chaos before Mike's fiancée, Emily, arrives and adds another element to the disturbed dynamics.",
+
+    director: "Amir Jaffer",
+    writer: "Puneet",
+    music: "David Obaniyi",
+    producers: "Wolfgang Boeck, Ajit Mukundan",
+    language: "English",
+
+    cast: "Puneet, Allison Ewing, Tyler McKenna, Vikki Beretta",
+
+    imdbUrl: "https://www.imdb.com/title/tt31107292/",
+    trailerUrl: "https://www.youtube.com/watch?v=lzDrl6yZf3o",
+
+    gallery: {
+      stills: [],
+      bts: [],
+      events: [],
     },
   },
 ];
