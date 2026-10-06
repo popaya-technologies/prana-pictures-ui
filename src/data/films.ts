@@ -295,6 +295,7 @@ export const films: Film[] = [
     cast: "Puneet, Nadia Nazir, Marvina Reasons",
 
     imdbUrl: "https://www.imdb.com/title/tt7642934/",
+    trailerUrl: "https://vimeo.com/341265115",
 
     gallery: {
       stills: [],
