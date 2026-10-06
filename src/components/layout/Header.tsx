@@ -16,11 +16,11 @@ export default function Header() {
  
   return (
     <header className="relative z-50 border-b border-neutral-200 bg-white">
-      <div className="mx-auto flex h-[88px] max-w-[1280px] items-center justify-between px-5 md:px-8">
+      <div className="mx-auto flex h-20 max-w-[1280px] items-center justify-between px-5 md:px-8">
         <Link
           href="/"
           aria-label="Prana Pictures home"
-          className="block h-[72px] w-[152px] shrink-0"
+          className="flex shrink-0 items-center gap-3"
         >
           <Image
             src="/images/brand/prana-lotus.png"
@@ -28,15 +28,18 @@ export default function Header() {
             width={1430}
             height={675}
             priority
-            className="h-full w-full object-contain"
+            className="h-auto w-[62px] object-contain md:w-[100px]"
           />
+          <span className="font-[family-name:var(--font-cormorant)] text-[17px] font-semibold tracking-[0.13em] text-neutral-900 sm:text-[18px] md:text-[18px] md:tracking-[0.15em]">
+            PRANA PICTURES
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-9 md:flex">
           <Link
             href="/"
             aria-current={isActive("/") ? "page" : undefined}
-            className={`relative py-8 text-sm transition-colors after:absolute after:bottom-5 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
+            className={`relative py-7 text-sm transition-colors after:absolute after:bottom-4 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
           >
             Home
           </Link>
@@ -44,7 +47,7 @@ export default function Header() {
           <Link
             href="/filmography"
             aria-current={isActive("/filmography") ? "page" : undefined}
-            className={`relative py-8 text-sm transition-colors after:absolute after:bottom-5 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/filmography") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
+            className={`relative py-7 text-sm transition-colors after:absolute after:bottom-4 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/filmography") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
           >
             Filmography
           </Link>
@@ -52,7 +55,7 @@ export default function Header() {
           <Link
             href="/news"
             aria-current={isActive("/news") ? "page" : undefined}
-            className={`relative py-8 text-sm transition-colors after:absolute after:bottom-5 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/news") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
+            className={`relative py-7 text-sm transition-colors after:absolute after:bottom-4 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/news") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
           >
             News
           </Link>
@@ -60,7 +63,7 @@ export default function Header() {
           <Link
             href="/about"
             aria-current={isActive("/about") ? "page" : undefined}
-            className={`relative py-8 text-sm transition-colors after:absolute after:bottom-5 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/about") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
+            className={`relative py-7 text-sm transition-colors after:absolute after:bottom-4 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/about") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
           >
             About
           </Link>
@@ -68,7 +71,7 @@ export default function Header() {
           <Link
             href="/contact"
             aria-current={isActive("/contact") ? "page" : undefined}
-            className={`relative py-8 text-sm transition-colors after:absolute after:bottom-5 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/contact") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
+            className={`relative py-7 text-sm transition-colors after:absolute after:bottom-4 after:left-0 after:h-[2px] after:w-full after:bg-[#e69a2d] hover:text-[#e69a2d] ${isActive("/contact") ? "text-[#e69a2d] after:opacity-100" : "text-neutral-700 after:opacity-0"}`}
           >
             Contact
           </Link>
@@ -92,7 +95,7 @@ export default function Header() {
       </div>
 
       {menuOpen && (
-        <nav className="absolute left-0 top-[88px] flex w-full flex-col gap-5 border-b border-neutral-200 bg-white px-6 py-6 md:hidden">
+        <nav className="absolute left-0 top-20 flex w-full flex-col gap-5 border-b border-neutral-200 bg-white px-6 py-6 md:hidden">
           <Link href="/" onClick={() => setMenuOpen(false)} className={isActive("/") ? "font-medium text-[#d88b21]" : "text-neutral-700"}>
             Home
           </Link>
