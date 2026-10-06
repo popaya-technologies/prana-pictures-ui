@@ -8,21 +8,6 @@ export default function AboutHero() {
       <div className="grid min-h-[630px] grid-cols-1 lg:grid-cols-[38%_62%]">
         {/* LEFT PANEL */}
         <div className="relative min-h-[540px] overflow-hidden bg-[#111] lg:h-[630px] lg:min-h-0 lg:self-start">
-          {/* VERTICAL ABOUT LETTERS */}
-          <div
-            aria-hidden="true"
-            className="absolute left-7 top-1/2 hidden -translate-y-1/2 flex-col items-center lg:flex"
-          >
-            {["A", "B", "O", "U", "T"].map((letter) => (
-              <span
-                key={letter}
-                className="font-[family-name:var(--font-cormorant)] text-[68px] leading-[0.82] font-medium text-transparent [-webkit-text-stroke:1px_#c27d1a]"
-              >
-                {letter}
-              </span>
-            ))}
-          </div>
-
           {/* WHITE CONTENT CARD */}
           <div className="absolute inset-y-0 right-0 flex w-[78%] items-center">
             <div className="w-full bg-white px-7 py-10 shadow-[0_18px_50px_rgba(0,0,0,0.16)] md:px-10 md:py-12 lg:px-11">

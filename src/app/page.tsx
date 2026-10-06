@@ -19,7 +19,7 @@ export default function Home() {
 
         <AboutSection />
 
-        <AwardsStrip />
+        <AwardsStrip plain />
 
         <ContactCTA />
       </main>

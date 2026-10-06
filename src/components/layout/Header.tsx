@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -18,9 +19,17 @@ export default function Header() {
       <div className="mx-auto flex h-[88px] max-w-[1280px] items-center justify-between px-5 md:px-8">
         <Link
           href="/"
-          className="font-[family-name:var(--font-cormorant)] text-[22px] font-semibold tracking-[0.22em] md:text-[26px]"
+          aria-label="Prana Pictures home"
+          className="block h-[72px] w-[152px] shrink-0"
         >
-          PRANA PICTURES
+          <Image
+            src="/images/brand/prana-lotus.png"
+            alt=""
+            width={1430}
+            height={675}
+            priority
+            className="h-full w-full object-contain"
+          />
         </Link>
 
         <nav className="hidden items-center gap-9 md:flex">
@@ -65,7 +74,7 @@ export default function Header() {
           </Link>
 
           <Link
-            href="/filmography"
+            href="/watch"
             className="bg-black px-6 py-3 text-sm text-white transition-colors hover:bg-neutral-700"
           >
             Watch our work
@@ -105,7 +114,7 @@ export default function Header() {
           </Link>
 
           <Link
-            href="/filmography"
+            href="/watch"
             onClick={() => setMenuOpen(false)}
             className="w-fit bg-neutral-900 px-6 py-3 text-white"
           >

@@ -32,6 +32,15 @@ export default function Footer() {
             </a>
 
             <a
+              href="https://x.com/pranapictures1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-300 hover:text-[#e69a2d]"
+            >
+              X
+            </a>
+
+            <a
               href="https://letterboxd.com/studio/prana-pictures/"
               target="_blank"
               rel="noopener noreferrer"

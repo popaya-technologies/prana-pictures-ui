@@ -3,14 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import {
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useState } from "react";
 
-type Filter = "all" | "drama" | "short";
+type Filter = "all" | "feature" | "short" | "series";
 
 type Film = {
   title: string;
@@ -30,7 +25,7 @@ const films: Film[] = [
     duration: "21 min",
     image: "/images/filmography/bobby.jpg",
     href: "/filmography/bobby",
-    categories: ["drama", "short"],
+    categories: ["short"],
   },
   {
     title: "Choices",
@@ -39,7 +34,7 @@ const films: Film[] = [
     duration: "20 min",
     image: "/images/filmography/choices.jpg",
     href: "/filmography/choices",
-    categories: ["drama", "short"],
+    categories: ["short"],
   },
   {
     title: "Arrangement",
@@ -48,7 +43,7 @@ const films: Film[] = [
     duration: "24 min",
     image: "/images/filmography/arrangement.jpg",
     href: "/filmography/arrangement",
-    categories: ["drama", "short"],
+    categories: ["short"],
   },
   {
     title: "Chances",
@@ -57,7 +52,7 @@ const films: Film[] = [
     duration: "17 min",
     image: "/images/filmography/chances.jpg",
     href: "/filmography/chances",
-    categories: ["drama", "short"],
+    categories: ["short"],
   },
   {
     title: "Hiraeth",
@@ -66,7 +61,7 @@ const films: Film[] = [
     duration: "7-part mini-series",
     image: "/images/filmography/hiraeth.jpg",
     href: "/filmography/hiraeth",
-    categories: ["drama"],
+    categories: ["series"],
   },
   {
     title: "Not Tonight",
@@ -75,32 +70,19 @@ const films: Film[] = [
     duration: "74 min",
     image: "/images/filmography/not-tonight.jpg",
     href: "/filmography/not-tonight",
-    categories: ["drama"],
+    categories: ["feature"],
   },
 ];
 
 const filters: { label: string; value: Filter }[] = [
-  { label: "All films", value: "all" },
-  { label: "Drama", value: "drama" },
-  { label: "Short films", value: "short" },
+  { label: "All", value: "all" },
+  { label: "Feature", value: "feature" },
+  { label: "Short", value: "short" },
+  { label: "Series", value: "series" },
 ];
 
-function isValidFilter(value: string | null): value is Filter {
-  return value === "all" || value === "drama" || value === "short";
-}
-
 export default function FilmographyGrid() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const filterFromUrl = searchParams.get("filter");
-
-  const activeFilter: Filter = isValidFilter(filterFromUrl)
-    ? filterFromUrl
-    : "all";
-
-  const [isPending, startTransition] = useTransition();
+  const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [animationKey, setAnimationKey] = useState(0);
 
   const filteredFilms = useMemo(() => {
@@ -114,24 +96,8 @@ export default function FilmographyGrid() {
   }, [activeFilter]);
 
   function handleFilterChange(filter: Filter) {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (filter === "all") {
-      params.delete("filter");
-    } else {
-      params.set("filter", filter);
-    }
-
-    const query = params.toString();
-    const url = query ? `${pathname}?${query}` : pathname;
-
+    setActiveFilter(filter);
     setAnimationKey((prev) => prev + 1);
-
-    startTransition(() => {
-      router.replace(url, {
-        scroll: false,
-      });
-    });
   }
 
   return (
@@ -168,11 +134,7 @@ export default function FilmographyGrid() {
         {/* GRID */}
         <div
           key={animationKey}
-          className={`grid grid-cols-1 gap-7 md:grid-cols-2 ${
-            isPending
-              ? "opacity-60"
-              : "animate-[filmFade_450ms_ease-out]"
-          }`}
+          className="grid animate-[filmFade_450ms_ease-out] grid-cols-1 gap-7 md:grid-cols-2"
         >
           {filteredFilms.map((film, index) => (
             <Link

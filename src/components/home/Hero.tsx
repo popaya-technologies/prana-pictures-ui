@@ -36,7 +36,7 @@ export default function Hero() {
 
     const interval = window.setInterval(() => {
       setActiveSlide((current) => (current + 1) % heroSlides.length);
-    }, 2500);
+    }, 4000);
 
     return () => window.clearInterval(interval);
   }, [isPaused]);

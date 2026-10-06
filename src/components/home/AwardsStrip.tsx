@@ -24,7 +24,15 @@ const awards = [
   },
 ];
 
-export default function AwardsStrip() {
+type Props = {
+  plain?: boolean;
+};
+
+export default function AwardsStrip({ plain = false }: Props) {
+  if (plain) {
+    return <div className="h-[36px] bg-[#191919] md:h-[40px]" aria-hidden="true" />;
+  }
+
   return (
     <section className="bg-[#191919] text-white">
       <div className="mx-auto grid max-w-[1280px] grid-cols-1 px-5 sm:grid-cols-2 md:px-8 lg:grid-cols-4">

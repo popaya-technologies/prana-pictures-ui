@@ -33,6 +33,7 @@ export type Film = {
   cast?: string;
 
   imdbUrl?: string;
+  letterboxdUrl?: string;
   trailerUrl?: string;
 
   gallery: FilmGallery;
@@ -64,6 +65,7 @@ export const films: Film[] = [
       "Puneet, Sareeka, Amogh Karwar, Viji Nathan, David Francis Perry, Jenina Moreno, Liz Ho, Hilary Davidson, Geeta Rai, Sidhant Lochan, Aditi Honawar",
 
     imdbUrl: "https://www.imdb.com/title/tt14235988/",
+    letterboxdUrl: "https://letterboxd.com/imdb/tt14235988/",
     
     trailerUrl: "https://vimeo.com/735322509",
 
@@ -149,6 +151,7 @@ export const films: Film[] = [
     cast: "Jackie Dallas, Puneet, Sherill Quinn",
 
     imdbUrl: "https://www.imdb.com/title/tt10729444/",
+    letterboxdUrl: "https://letterboxd.com/imdb/tt10729444/",
 
     trailerUrl: "https://vimeo.com/505538817",
 
@@ -223,6 +226,7 @@ export const films: Film[] = [
       "Puneet, Sareeka, Michael Placencia, Silmara Volpi",
 
     imdbUrl: "https://www.imdb.com/title/tt9581596/",
+    letterboxdUrl: "https://letterboxd.com/imdb/tt9581596/",
 
     trailerUrl: "https://vimeo.com/337624807",
 
@@ -295,6 +299,7 @@ export const films: Film[] = [
     cast: "Puneet, Nadia Nazir, Marvina Reasons",
 
     imdbUrl: "https://www.imdb.com/title/tt7642934/",
+    letterboxdUrl: "https://letterboxd.com/imdb/tt7642934/",
     trailerUrl: "https://vimeo.com/341265115",
 
     gallery: {
@@ -328,6 +333,7 @@ export const films: Film[] = [
       "Puneet, Isaac Benjamin, Sherill Quinn, Maaz Ali, David Massil, Rebecca Faiola, Nikki Chawla, Jack Jaco Pitchon, Joyce Lee Kinney, Anthony James Rummel, Aditya Thakur, Emily Corbo, Radhika Rao, Teresa Perez, MK Ansari, Naren Srinivasan, Barry Gottlieb, Manju Chattopadhyay, Anthony Puah, Nadia Nazir",
 
     imdbUrl: "https://www.imdb.com/title/tt10449320/",
+    letterboxdUrl: "https://letterboxd.com/imdb/tt10449320/",
     trailerUrl: "https://vimeo.com/457969452",
 
     gallery: {
@@ -359,6 +365,7 @@ export const films: Film[] = [
     cast: "Puneet, Allison Ewing, Tyler McKenna, Vikki Beretta",
 
     imdbUrl: "https://www.imdb.com/title/tt31107292/",
+    letterboxdUrl: "https://letterboxd.com/imdb/tt31107292/",
     trailerUrl: "https://www.youtube.com/watch?v=lzDrl6yZf3o",
 
     gallery: {
