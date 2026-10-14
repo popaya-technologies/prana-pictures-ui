@@ -1,23 +1,57 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ArrowRight } from "lucide-react";
 
 export default function ContactForm() {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  const formElement = event.currentTarget;
 
-    if (!captchaToken) {
-      setMessage("Please complete the CAPTCHA before submitting.");
-      return;
-    }
-
-    setMessage("Form is ready to be connected to your backend.");
+  if (!captchaToken) {
+    setMessage("Please complete the CAPTCHA before submitting.");
+    return;
   }
+
+  const form = new FormData(formElement);
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/contact`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: form.get("name"),
+        email: form.get("email"),
+        phone: form.get("phone"),
+        subject: form.get("subject"),
+        message: form.get("message"),
+        recaptchaToken: captchaToken,
+      }),
+    },
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    recaptchaRef.current?.reset();
+    setCaptchaToken(null);
+    setMessage(result.message || "Unable to send your message.");
+    return;
+  }
+
+  formElement.reset();
+  recaptchaRef.current?.reset();
+  setCaptchaToken(null);
+  setMessage(result.message);
+}
 
   const inputClass =
     "min-h-[52px] w-full border border-neutral-300 bg-white px-4 text-sm outline-none transition-colors placeholder:text-neutral-400 focus:border-[#e69a2d]";
@@ -77,6 +111,7 @@ export default function ContactForm() {
             id="phone"
             name="phone"
             type="tel"
+            required
             placeholder="Your phone number"
             className={inputClass}
           />
@@ -123,6 +158,7 @@ export default function ContactForm() {
       {/* CAPTCHA */}
       <div className="mt-6 overflow-x-auto">
         <ReCAPTCHA
+          ref={recaptchaRef}
           sitekey={
             process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ??
             "YOUR_RECAPTCHA_SITE_KEY"

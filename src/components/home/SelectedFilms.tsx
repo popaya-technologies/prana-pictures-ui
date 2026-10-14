@@ -36,7 +36,7 @@ export default function SelectedFilms() {
         <div className="mb-8 flex items-end justify-between gap-6">
           <div>
             <h2 className="font-[family-name:var(--font-cormorant)] text-[38px] leading-none font-medium md:text-[46px]">
-              Selected films
+              Work
             </h2>
 
             <div className="mt-4 h-[2px] w-8 bg-[#e69a2d]" />
@@ -46,7 +46,7 @@ export default function SelectedFilms() {
             href="/filmography"
             className="group hidden items-center gap-2 text-sm text-neutral-700 transition-colors duration-300 hover:text-[#e69a2d] sm:flex"
           >
-            View all films
+            View all work
             <ArrowRight
               size={18}
               className="transition-transform duration-300 group-hover:translate-x-1"
@@ -100,7 +100,7 @@ export default function SelectedFilms() {
             href="/filmography"
             className="group inline-flex items-center gap-2 text-sm text-neutral-700 transition-colors hover:text-[#e69a2d]"
           >
-            View all films
+            View all work
             <ArrowRight
               size={18}
               className="transition-transform duration-300 group-hover:translate-x-1"
