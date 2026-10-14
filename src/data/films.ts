@@ -153,7 +153,7 @@ export const films: Film[] = [
     imdbUrl: "https://www.imdb.com/title/tt10729444/",
     letterboxdUrl: "https://letterboxd.com/imdb/tt10729444/",
 
-    trailerUrl: "https://vimeo.com/505538817",
+    trailerUrl: "https://vimeo.com/383426988",
 
     gallery: {
       stills: [
