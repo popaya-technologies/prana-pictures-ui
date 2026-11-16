@@ -58,7 +58,7 @@ function toFilmCard(film: PublicFilm): FilmCard {
     image:
       film.poster?.url ??
       film.heroImage?.url ??
-      "/images/filmography/hero.jpg",
+      `/images/filmography/${film.slug}.jpg`,
     href: `/filmography/${film.slug}`,
   };
 }
