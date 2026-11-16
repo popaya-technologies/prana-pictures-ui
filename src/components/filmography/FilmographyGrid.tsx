@@ -4,75 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
+import type { PublicFilm } from "@/lib/api/films";
 
 type Filter = "all" | "feature" | "short" | "series";
 
-type Film = {
+type FilmCard = {
   title: string;
   year: string;
   type: string;
   duration: string;
   image: string;
+  imageAlt: string;
   href: string;
   categories: Filter[];
 };
-
-const films: Film[] = [
-  {
-    title: "Bobby",
-    year: "2022",
-    type: "Short / Drama",
-    duration: "21 min",
-    image: "/images/filmography/bobby.jpg",
-    href: "/filmography/bobby",
-    categories: ["short"],
-  },
-  {
-    title: "Choices",
-    year: "2020",
-    type: "Short / Drama",
-    duration: "20 min",
-    image: "/images/filmography/choices.jpg",
-    href: "/filmography/choices",
-    categories: ["short"],
-  },
-  {
-    title: "Arrangement",
-    year: "2019",
-    type: "Short / Drama",
-    duration: "24 min",
-    image: "/images/filmography/arrangement.jpg",
-    href: "/filmography/arrangement",
-    categories: ["short"],
-  },
-  {
-    title: "Chances",
-    year: "2018",
-    type: "Short / Drama",
-    duration: "17 min",
-    image: "/images/filmography/chances.jpg",
-    href: "/filmography/chances",
-    categories: ["short"],
-  },
-  {
-    title: "Hiraeth",
-    year: "2020",
-    type: "Series / Drama",
-    duration: "7-part mini-series",
-    image: "/images/filmography/hiraeth.jpg",
-    href: "/filmography/hiraeth",
-    categories: ["series"],
-  },
-  {
-    title: "Not Tonight",
-    year: "2024",
-    type: "Feature / Drama",
-    duration: "74 min",
-    image: "/images/filmography/not-tonight.jpg",
-    href: "/filmography/not-tonight",
-    categories: ["feature"],
-  },
-];
 
 const filters: { label: string; value: Filter }[] = [
   { label: "All", value: "all" },
@@ -81,19 +26,73 @@ const filters: { label: string; value: Filter }[] = [
   { label: "Series", value: "series" },
 ];
 
-export default function FilmographyGrid() {
+type FilmographyGridProps = {
+  films: PublicFilm[];
+  loadFailed?: boolean;
+};
+
+function getCategories(genres: string[]): Filter[] {
+  const categories: Filter[] = [];
+  const normalizedGenres = genres.map((genre) =>
+    genre.toLowerCase(),
+  );
+
+  if (normalizedGenres.some((genre) => genre.includes("feature"))) {
+    categories.push("feature");
+  }
+
+  if (normalizedGenres.some((genre) => genre.includes("short"))) {
+    categories.push("short");
+  }
+
+  if (normalizedGenres.some((genre) => genre.includes("series"))) {
+    categories.push("series");
+  }
+
+  return categories;
+}
+
+function createFilmCard(film: PublicFilm): FilmCard {
+  const releaseDate = new Date(film.releaseDate);
+  const year = Number.isNaN(releaseDate.getTime())
+    ? ""
+    : String(releaseDate.getUTCFullYear());
+
+  return {
+    title: film.title,
+    year,
+    type: film.genres.join(" / "),
+    duration: `${film.runtimeMinutes} min`,
+    image:
+      film.poster?.url ??
+      `/images/filmography/${film.slug}.jpg`,
+    imageAlt: film.poster?.alt ?? `${film.title} film poster`,
+    href: `/filmography/${film.slug}`,
+    categories: getCategories(film.genres),
+  };
+}
+
+export default function FilmographyGrid({
+  films,
+  loadFailed = false,
+}: FilmographyGridProps) {
   const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [animationKey, setAnimationKey] = useState(0);
 
+  const filmCards = useMemo(
+    () => films.map(createFilmCard),
+    [films],
+  );
+
   const filteredFilms = useMemo(() => {
     if (activeFilter === "all") {
-      return films;
+      return filmCards;
     }
 
-    return films.filter((film) =>
+    return filmCards.filter((film) =>
       film.categories.includes(activeFilter)
     );
-  }, [activeFilter]);
+  }, [activeFilter, filmCards]);
 
   function handleFilterChange(filter: Filter) {
     setActiveFilter(filter);
@@ -148,8 +147,11 @@ export default function FilmographyGrid() {
               <div className="relative aspect-[16/8.5] overflow-hidden">
                 <Image
                   src={film.image}
-                  alt={`${film.title} film still`}
+                  alt={film.imageAlt}
                   fill
+                  unoptimized={film.image.startsWith(
+                    "https://s3.pranapictures.com/",
+                  )}
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
@@ -187,7 +189,11 @@ export default function FilmographyGrid() {
           ))}
         </div>
 
-        {filteredFilms.length === 0 && (
+        {loadFailed ? (
+          <div className="py-16 text-center text-sm text-neutral-500">
+            Films could not be loaded. Please try again shortly.
+          </div>
+        ) : filteredFilms.length === 0 && (
           <div className="py-16 text-center text-sm text-neutral-500">
             No films found in this category.
           </div>

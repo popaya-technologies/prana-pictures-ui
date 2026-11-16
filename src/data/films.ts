@@ -22,6 +22,7 @@ export type Film = {
 
   tagline: string;
   synopsis: string;
+  synopsisHtml?: string;
 
   director: string;
   writer: string;

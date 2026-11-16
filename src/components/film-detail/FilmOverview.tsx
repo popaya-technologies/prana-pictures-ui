@@ -25,9 +25,18 @@ export default function FilmOverview({ film }: Props) {
 
           <div className="mt-4 h-[2px] w-8 bg-[#e69a2d]" />
 
-          <p className="mt-7 max-w-[480px] text-[15px] leading-7 text-neutral-600 md:text-[16px]">
-            {film.synopsis}
-          </p>
+          {film.synopsisHtml ? (
+            <div
+              className="mt-7 max-w-[480px] space-y-4 text-[15px] leading-7 text-neutral-600 md:text-[16px]"
+              dangerouslySetInnerHTML={{
+                __html: film.synopsisHtml,
+              }}
+            />
+          ) : (
+            <p className="mt-7 max-w-[480px] text-[15px] leading-7 text-neutral-600 md:text-[16px]">
+              {film.synopsis}
+            </p>
+          )}
         </div>
 
         {/* RIGHT */}

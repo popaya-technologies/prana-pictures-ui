@@ -8,19 +8,45 @@ import OurVision from "@/components/about/OurVision";
 import OurValues from "@/components/about/OurValues";
 import OurTeam from "@/components/about/OurTeam";
 import AboutCTA from "@/components/about/AboutCTA";
+import { getPublicInformationBySlug } from "@/lib/api/information";
+import { getPublicTeamMembers } from "@/lib/api/team";
 
+export const dynamic = "force-dynamic";
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const [informationResult, teamResult] = await Promise.allSettled([
+    getPublicInformationBySlug("about-us-who-we-are"),
+    getPublicTeamMembers(),
+  ]);
+
+  const whoWeAre =
+    informationResult.status === "fulfilled"
+      ? informationResult.value
+      : null;
+  const teamMembers =
+    teamResult.status === "fulfilled" ? teamResult.value : [];
+
+  if (informationResult.status === "rejected") {
+    console.error(
+      "Unable to load Who We Are information:",
+      informationResult.reason,
+    );
+  }
+
+  if (teamResult.status === "rejected") {
+    console.error("Unable to load team members:", teamResult.reason);
+  }
+
   return (
     <>
       <Header />
 
       <main>
         <AboutHero />
-        <WhoWeAre />
+        <WhoWeAre information={whoWeAre} />
         <OurVision />
         <OurValues />
-        <OurTeam />
+        <OurTeam members={teamMembers} />
         <AboutCTA />
       </main>
 

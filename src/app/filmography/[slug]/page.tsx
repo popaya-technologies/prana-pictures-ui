@@ -10,7 +10,11 @@ import FilmGallery from "@/components/film-detail/FilmGallery";
 import FilmCredits from "@/components/film-detail/FilmCredits";
 import FilmWatch from "@/components/film-detail/FilmWatch";
 
-import { films, getFilmBySlug } from "@/data/films";
+import { getFilmBySlug } from "@/data/films";
+import {
+  getPublicFilmBySlug,
+  mapPublicFilmToDisplayFilm,
+} from "@/lib/api/films";
 
 type FilmPageProps = {
   params: Promise<{
@@ -18,18 +22,29 @@ type FilmPageProps = {
   }>;
 };
 
-export function generateStaticParams() {
-  return films.map((film) => ({
-    slug: film.slug,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function FilmPage({
   params,
 }: FilmPageProps) {
   const { slug } = await params;
 
-  const film = getFilmBySlug(slug);
+  const fallbackFilm = getFilmBySlug(slug);
+  let apiFilm = null;
+
+  try {
+    apiFilm = await getPublicFilmBySlug(slug);
+  } catch (error) {
+    console.error(`Unable to load film ${slug}:`, error);
+  }
+
+  if (!apiFilm && !fallbackFilm) {
+    notFound();
+  }
+
+  const film = apiFilm
+    ? mapPublicFilmToDisplayFilm(apiFilm, fallbackFilm)
+    : fallbackFilm;
 
   if (!film) {
     notFound();

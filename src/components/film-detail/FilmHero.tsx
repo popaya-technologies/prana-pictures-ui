@@ -84,6 +84,9 @@ export default function FilmHero({ film }: Props) {
         alt={`${film.title} film still`}
         fill
         priority
+        unoptimized={film.heroImage.startsWith(
+          "https://s3.pranapictures.com/",
+        )}
         className="object-cover"
         sizes="100vw"
       />

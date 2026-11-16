@@ -1,6 +1,23 @@
 import Image from "next/image";
 
-export default function OurTeam() {
+import type { PublicTeamMember } from "@/lib/api/team";
+
+type OurTeamProps = {
+  members?: PublicTeamMember[];
+};
+
+const fallbackMember: PublicTeamMember = {
+  _id: "ajit-fallback",
+  name: "Ajit Mukundan",
+  designation: "Managing Partner",
+  shortBio:
+    "A successful businessman passionate about the arts, focused on connecting stories with their intended audiences.",
+  sortOrder: 1,
+};
+
+export default function OurTeam({ members = [] }: OurTeamProps) {
+  const member = members[0] ?? fallbackMember;
+
   return (
     <section className="bg-[#f7f5f0] py-14 md:py-16 lg:py-20">
       <div className="mx-auto max-w-[1280px] px-5 md:px-8">
@@ -13,33 +30,29 @@ export default function OurTeam() {
         </div>
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[42%_58%] lg:items-center">
-          {/* IMAGE */}
           <div className="relative min-h-[420px] overflow-hidden bg-neutral-200">
             <Image
               src="/images/about/ajit.jpg"
-              alt="Ajit Mukundan"
+              alt={member.name}
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 42vw"
             />
           </div>
 
-          {/* CONTENT */}
           <div className="lg:px-8">
             <h3 className="font-[family-name:var(--font-cormorant)] text-[40px] leading-none font-medium uppercase md:text-[46px]">
-              Ajit Mukundan
+              {member.name}
             </h3>
 
             <p className="mt-3 text-sm font-medium text-[#e69a2d]">
-              Managing Partner
+              {member.designation}
             </p>
 
             <p className="mt-6 max-w-[520px] text-[15px] leading-7 text-neutral-600 md:text-[16px]">
-              A successful businessman passionate about the arts, focused on
-              connecting stories with their intended audiences.
+              {member.shortBio ??
+                "Learn more about the people behind Prana Pictures."}
             </p>
-
-            {/* Read biography button hidden until the biography page is ready. */}
           </div>
         </div>
       </div>

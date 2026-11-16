@@ -165,6 +165,9 @@ function MediaCard({
         alt={item.alt ?? "Film gallery image"}
         fill
         priority={priority}
+        unoptimized={item.src.startsWith(
+          "https://s3.pranapictures.com/",
+        )}
         className="object-cover transition-transform duration-700 group-hover:scale-105"
         sizes={sizes}
       />
