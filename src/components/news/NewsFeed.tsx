@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 
-import { newsStories, type NewsCategory, type NewsStory } from "@/data/news";
+import { type NewsCategory, type NewsStory } from "@/data/news";
 
 type Filter = "all" | NewsCategory;
 
@@ -18,10 +18,14 @@ const filters: { label: string; value: Filter }[] = [
 
 const initialCount = 6;
 
-export default function NewsFeed() {
+type NewsFeedProps = {
+  stories: NewsStory[];
+};
+
+export default function NewsFeed({ stories }: NewsFeedProps) {
   const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [visibleCount, setVisibleCount] = useState(initialCount);
-  const feedStories = newsStories.slice(1);
+  const feedStories = stories.slice(1);
   const filteredStories = feedStories.filter(
     (story) => activeFilter === "all" || story.category === activeFilter,
   );
@@ -91,10 +95,16 @@ export default function NewsFeed() {
 }
 
 function NewsCard({ story, index }: { story: NewsStory; index: number }) {
+  const href = story.externalUrl ?? `/news/${story.slug}`;
+  const externalLinkProps = story.externalUrl
+    ? { target: "_blank" as const, rel: "noopener noreferrer" }
+    : {};
+
   return (
     <article className="border border-neutral-200 bg-white">
       <Link
-        href={`/news/${story.slug}`}
+        href={href}
+        {...externalLinkProps}
         className="group relative block aspect-[2.25/1] overflow-hidden bg-neutral-100"
         aria-label={`Read ${story.title}`}
       >
@@ -110,7 +120,7 @@ function NewsCard({ story, index }: { story: NewsStory; index: number }) {
 
       <div className="p-4 md:p-5">
         <h2 className="font-[family-name:var(--font-cormorant)] text-[25px] leading-[1.05] font-medium md:text-[28px]">
-          <Link href={`/news/${story.slug}`} className="transition-colors hover:text-[#b66b0c]">
+          <Link href={href} {...externalLinkProps} className="transition-colors hover:text-[#b66b0c]">
             {story.title}
           </Link>
         </h2>
@@ -121,7 +131,8 @@ function NewsCard({ story, index }: { story: NewsStory; index: number }) {
           {story.excerpt}
         </p>
         <Link
-          href={`/news/${story.slug}`}
+          href={href}
+          {...externalLinkProps}
           className="group mt-4 inline-flex items-center gap-2 text-xs font-medium text-[#b66b0c] transition-colors hover:text-[#8f5008]"
         >
           Read more

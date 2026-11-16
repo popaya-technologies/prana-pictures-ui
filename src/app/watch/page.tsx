@@ -4,14 +4,34 @@ import { Play } from "lucide-react";
 
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
-import { films } from "@/data/films";
+import { films as fallbackFilms, getFilmBySlug } from "@/data/films";
+import {
+  getPublicFilms,
+  mapPublicFilmToDisplayFilm,
+} from "@/lib/api/films";
 
 export const metadata: Metadata = {
   title: "Watch Our Work | Prana Pictures",
   description: "Watch trailers from Prana Pictures.",
 };
 
-export default function WatchPage() {
+export const dynamic = "force-dynamic";
+
+export default async function WatchPage() {
+  let films = fallbackFilms;
+
+  try {
+    const apiFilms = await getPublicFilms();
+
+    if (apiFilms.length > 0) {
+      films = apiFilms.map((film) =>
+        mapPublicFilmToDisplayFilm(film, getFilmBySlug(film.slug)),
+      );
+    }
+  } catch (error) {
+    console.error("Unable to load films for Watch:", error);
+  }
+
   const filmsWithTrailers = films.filter((film) => film.trailerUrl);
 
   return (
@@ -50,6 +70,9 @@ export default function WatchPage() {
                     src={film.heroImage}
                     alt={`${film.title} trailer`}
                     fill
+                    unoptimized={film.heroImage.startsWith(
+                      "https://s3.pranapictures.com/",
+                    )}
                     sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                   />

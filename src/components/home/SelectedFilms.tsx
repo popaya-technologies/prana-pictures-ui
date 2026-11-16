@@ -2,7 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-const films = [
+import type { PublicFilm } from "@/lib/api/films";
+
+type FilmCard = {
+  title: string;
+  year: string;
+  type: string;
+  duration: string;
+  image: string;
+  href: string;
+};
+
+const fallbackFilms: FilmCard[] = [
   {
     title: "Bobby",
     year: "2022",
@@ -29,7 +40,34 @@ const films = [
   },
 ];
 
-export default function SelectedFilms() {
+type SelectedFilmsProps = {
+  films?: PublicFilm[];
+};
+
+function toFilmCard(film: PublicFilm): FilmCard {
+  const releaseDate = new Date(film.releaseDate);
+  const year = Number.isNaN(releaseDate.getTime())
+    ? ""
+    : String(releaseDate.getUTCFullYear());
+
+  return {
+    title: film.title,
+    year,
+    type: film.genres.join(", "),
+    duration: `${film.runtimeMinutes} min`,
+    image:
+      film.poster?.url ??
+      film.heroImage?.url ??
+      "/images/filmography/hero.jpg",
+    href: `/filmography/${film.slug}`,
+  };
+}
+
+export default function SelectedFilms({ films = [] }: SelectedFilmsProps) {
+  const filmCards = films.length > 0
+    ? films.map(toFilmCard)
+    : fallbackFilms;
+
   return (
     <section className="bg-white py-10 md:py-12">
       <div className="mx-auto max-w-[1280px] px-5 md:px-8">
@@ -38,7 +76,6 @@ export default function SelectedFilms() {
             <h2 className="font-[family-name:var(--font-cormorant)] text-[38px] leading-none font-medium md:text-[46px]">
               Work
             </h2>
-
             <div className="mt-4 h-[2px] w-8 bg-[#e69a2d]" />
           </div>
 
@@ -55,9 +92,9 @@ export default function SelectedFilms() {
         </div>
 
         <div className="grid grid-cols-1 justify-items-center gap-7 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-          {films.map((film) => (
+          {filmCards.map((film) => (
             <Link
-              key={film.title}
+              key={film.href}
               href={film.href}
               className="group block w-full max-w-[380px] overflow-hidden border border-neutral-200 bg-white transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(0,0,0,0.1)] lg:max-w-none"
             >
@@ -66,6 +103,9 @@ export default function SelectedFilms() {
                   src={film.image}
                   alt={`${film.title} official poster`}
                   fill
+                  unoptimized={film.image.startsWith(
+                    "https://s3.pranapictures.com/",
+                  )}
                   className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                   sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
                 />
@@ -76,13 +116,12 @@ export default function SelectedFilms() {
                   <h3 className="font-[family-name:var(--font-cormorant)] text-[28px] leading-none font-medium uppercase md:text-[32px]">
                     {film.title}
                   </h3>
-
                   <div className="mt-2 flex flex-wrap items-center gap-x-2 text-[12px] text-neutral-600">
-                    <span>{film.year}</span>
-                    <span className="text-neutral-300">•</span>
-                    <span>{film.type}</span>
-                    <span className="text-neutral-300">•</span>
-                    <span>{film.duration}</span>
+                    {film.year && <span>{film.year}</span>}
+                    {film.year && film.type && <span>•</span>}
+                    {film.type && <span>{film.type}</span>}
+                    {film.type && film.duration && <span>•</span>}
+                    {film.duration && <span>{film.duration}</span>}
                   </div>
                 </div>
 

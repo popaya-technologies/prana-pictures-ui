@@ -6,10 +6,11 @@ import { newsStories, type NewsStory } from "@/data/news";
 
 type Props = {
   story: NewsStory;
+  stories?: NewsStory[];
 };
 
-export default function NewsArticle({ story }: Props) {
-  const relatedStories = newsStories
+export default function NewsArticle({ story, stories = newsStories }: Props) {
+  const relatedStories = stories
     .filter((item) => item.slug !== story.slug)
     .slice(0, 3);
 

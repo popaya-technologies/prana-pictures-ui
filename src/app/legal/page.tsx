@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PolicyPage, { type PolicySection } from "@/components/policy/PolicyPage";
+import { getPublicInformationBySlug } from "@/lib/api/information";
 
 const sections: PolicySection[] = [
   {
@@ -29,7 +30,17 @@ const sections: PolicySection[] = [
   },
 ];
 
-export default function LegalPage() {
+export const dynamic = "force-dynamic";
+
+export default async function LegalPage() {
+  let information = null;
+
+  try {
+    information = await getPublicInformationBySlug("privacy-policy");
+  } catch (error) {
+    console.error("Unable to load Privacy Policy:", error);
+  }
+
   return (
     <>
       <Header />
@@ -41,6 +52,7 @@ export default function LegalPage() {
           page="legal"
           relatedPage="disclaimer"
           relatedTitle="Disclaimer"
+          descriptionHtml={information?.descriptionHtml}
         />
       </main>
       <Footer />

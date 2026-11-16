@@ -9,6 +9,7 @@ export type NewsStory = {
   image: string;
   imageAlt: string;
   quote: string;
+  externalUrl?: string;
 };
 
 export const newsStories: NewsStory[] = [

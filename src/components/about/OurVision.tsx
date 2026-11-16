@@ -1,4 +1,10 @@
-export default function OurVision() {
+import type { PublicInformationPage } from "@/lib/api/information";
+
+type OurVisionProps = {
+  information?: PublicInformationPage | null;
+};
+
+export default function OurVision({ information }: OurVisionProps) {
   return (
     <section className="relative overflow-hidden bg-[#191919] py-12 text-white md:py-14 lg:py-16">
       <div
@@ -21,10 +27,19 @@ export default function OurVision() {
           </div>
 
           <div className="border-t border-white/15 pt-7 lg:border-l lg:border-t-0 lg:py-2 lg:pl-14">
-            <p className="max-w-[780px] font-[family-name:var(--font-cormorant)] text-[30px] leading-[1.12] font-medium text-white md:text-[38px] lg:text-[46px]">
-              Empowering independent filmmakers to bring bold stories to life
-              for South Asian and global audiences.
-            </p>
+            {information?.descriptionHtml ? (
+              <div
+                className="max-w-[780px] font-[family-name:var(--font-cormorant)] text-[30px] leading-[1.12] font-medium text-white md:text-[38px] lg:text-[46px]"
+                dangerouslySetInnerHTML={{
+                  __html: information.descriptionHtml,
+                }}
+              />
+            ) : (
+              <p className="max-w-[780px] font-[family-name:var(--font-cormorant)] text-[30px] leading-[1.12] font-medium text-white md:text-[38px] lg:text-[46px]">
+                Empowering independent filmmakers to bring bold stories to life
+                for South Asian and global audiences.
+              </p>
+            )}
           </div>
         </div>
       </div>

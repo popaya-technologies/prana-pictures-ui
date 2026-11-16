@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import type { PublicFilm } from "@/lib/api/films";
 
-const sections = [
+const baseSections = [
   {
     number: "01",
     title: "Explore",
@@ -44,7 +45,26 @@ const sections = [
   },
 ];
 
-export default function SitemapContent() {
+type SitemapContentProps = {
+  films?: PublicFilm[];
+};
+
+export default function SitemapContent({ films = [] }: SitemapContentProps) {
+  const sections = baseSections.map((section) =>
+    section.title === "Films" && films.length > 0
+      ? {
+          ...section,
+          links: [
+            ...films.map((film) => ({
+              label: film.title,
+              href: `/filmography/${film.slug}`,
+            })),
+            { label: "All films", href: "/filmography" },
+          ],
+        }
+      : section,
+  );
+
   return (
     <>
       <section className="border-b border-neutral-200 bg-white">

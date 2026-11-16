@@ -12,6 +12,7 @@ type Props = {
   page: "legal" | "disclaimer";
   relatedPage: "legal" | "disclaimer";
   relatedTitle: string;
+  descriptionHtml?: string;
 };
 
 export default function PolicyPage({
@@ -21,6 +22,7 @@ export default function PolicyPage({
   page,
   relatedPage,
   relatedTitle,
+  descriptionHtml,
 }: Props) {
   const pageLinks = [
     { label: "Legal & Privacy", href: "/legal", key: "legal" },
@@ -65,6 +67,7 @@ export default function PolicyPage({
                 ))}
               </nav>
 
+              {!descriptionHtml && (
               <div className="mt-6 hidden border-t border-neutral-200 pt-5 lg:block">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
                   On this page
@@ -84,10 +87,16 @@ export default function PolicyPage({
                   ))}
                 </nav>
               </div>
+              )}
             </aside>
 
             <div className="lg:pl-10">
-              {sections.map((section, index) => (
+              {descriptionHtml ? (
+                <article
+                  className="space-y-5 text-sm leading-7 text-neutral-600 md:text-[15px]"
+                  dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+                />
+              ) : sections.map((section, index) => (
                 <section
                   key={section.title}
                   id={`section-${index + 1}`}
@@ -117,9 +126,11 @@ export default function PolicyPage({
                 </Link>
               </div>
 
-              <p className="mt-5 text-xs leading-5 text-neutral-500">
-                Draft for review. Have the final wording approved before publishing.
-              </p>
+              {!descriptionHtml && (
+                <p className="mt-5 text-xs leading-5 text-neutral-500">
+                  Draft for review. Have the final wording approved before publishing.
+                </p>
+              )}
             </div>
           </div>
         </div>

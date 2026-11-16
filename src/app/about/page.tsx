@@ -14,8 +14,10 @@ import { getPublicTeamMembers } from "@/lib/api/team";
 export const dynamic = "force-dynamic";
 
 export default async function AboutPage() {
-  const [informationResult, teamResult] = await Promise.allSettled([
+  const [informationResult, visionResult, teamResult] =
+    await Promise.allSettled([
     getPublicInformationBySlug("about-us-who-we-are"),
+    getPublicInformationBySlug("vision"),
     getPublicTeamMembers(),
   ]);
 
@@ -25,6 +27,8 @@ export default async function AboutPage() {
       : null;
   const teamMembers =
     teamResult.status === "fulfilled" ? teamResult.value : [];
+  const vision =
+    visionResult.status === "fulfilled" ? visionResult.value : null;
 
   if (informationResult.status === "rejected") {
     console.error(
@@ -37,6 +41,10 @@ export default async function AboutPage() {
     console.error("Unable to load team members:", teamResult.reason);
   }
 
+  if (visionResult.status === "rejected") {
+    console.error("Unable to load Vision:", visionResult.reason);
+  }
+
   return (
     <>
       <Header />
@@ -44,7 +52,7 @@ export default async function AboutPage() {
       <main>
         <AboutHero />
         <WhoWeAre information={whoWeAre} />
-        <OurVision />
+        <OurVision information={vision} />
         <OurValues />
         <OurTeam members={teamMembers} />
         <AboutCTA />

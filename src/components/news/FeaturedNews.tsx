@@ -9,12 +9,18 @@ type Props = {
 };
 
 export default function FeaturedNews({ story }: Props) {
+  const href = story.externalUrl ?? `/news/${story.slug}`;
+  const externalLinkProps = story.externalUrl
+    ? { target: "_blank" as const, rel: "noopener noreferrer" }
+    : {};
+
   return (
     <section className="bg-white pb-10 md:pb-12">
       <div className="mx-auto max-w-[1280px] px-5 md:px-8">
         <article className="grid gap-7 border border-neutral-200 p-4 md:p-6 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-10">
           <Link
-            href={`/news/${story.slug}`}
+            href={href}
+            {...externalLinkProps}
             className="group relative block aspect-[1.55/1] overflow-hidden bg-neutral-100"
             aria-label={`Read ${story.title}`}
           >
@@ -39,7 +45,8 @@ export default function FeaturedNews({ story }: Props) {
               {story.excerpt}
             </p>
             <Link
-              href={`/news/${story.slug}`}
+              href={href}
+              {...externalLinkProps}
               className="group mt-6 inline-flex min-h-[48px] items-center gap-3 bg-[#e69a2d] px-6 text-sm font-medium text-white transition-colors hover:bg-[#d88b21]"
             >
               Read story

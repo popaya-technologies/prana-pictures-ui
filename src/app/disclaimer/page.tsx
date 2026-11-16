@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PolicyPage, { type PolicySection } from "@/components/policy/PolicyPage";
+import { getPublicInformationBySlug } from "@/lib/api/information";
 
 const sections: PolicySection[] = [
   {
@@ -29,7 +30,17 @@ const sections: PolicySection[] = [
   },
 ];
 
-export default function DisclaimerPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DisclaimerPage() {
+  let information = null;
+
+  try {
+    information = await getPublicInformationBySlug("disclaimer");
+  } catch (error) {
+    console.error("Unable to load Disclaimer:", error);
+  }
+
   return (
     <>
       <Header />
@@ -41,6 +52,7 @@ export default function DisclaimerPage() {
           page="disclaimer"
           relatedPage="legal"
           relatedTitle="Legal & Privacy"
+          descriptionHtml={information?.descriptionHtml}
         />
       </main>
       <Footer />
