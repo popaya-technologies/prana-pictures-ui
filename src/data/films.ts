@@ -18,7 +18,8 @@ export type Film = {
   type: string;
   duration: string;
 
-  heroImage: string;
+  // null = nothing uploaded in the admin panel (a placeholder is shown).
+  heroImage: string | null;
 
   tagline: string;
   synopsis: string;

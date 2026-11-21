@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+
+import FilmImagePlaceholder from "@/components/films/FilmImagePlaceholder";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -13,7 +15,8 @@ type FilmCard = {
   year: string;
   type: string;
   duration: string;
-  image: string;
+  // null = nothing uploaded in the admin panel (a placeholder is shown).
+  image: string | null;
   imageAlt: string;
   href: string;
   categories: Filter[];
@@ -63,10 +66,11 @@ function createFilmCard(film: PublicFilm): FilmCard {
     year,
     type: film.genres.join(" / "),
     duration: `${film.runtimeMinutes} min`,
-    image:
-      film.poster?.url ??
-      `/images/filmography/${film.slug}.jpg`,
-    imageAlt: film.poster?.alt ?? `${film.title} film poster`,
+    // Landscape cards: hero image first, then the poster.
+    image: film.heroImage?.url ?? film.poster?.url ?? null,
+    imageAlt:
+      (film.heroImage?.url ? film.heroImage.alt : film.poster?.alt) ||
+      `${film.title} film still`,
     href: `/filmography/${film.slug}`,
     categories: getCategories(film.genres),
   };
@@ -145,16 +149,20 @@ export default function FilmographyGrid({
               }}
             >
               <div className="relative aspect-[16/8.5] overflow-hidden">
-                <Image
-                  src={film.image}
-                  alt={film.imageAlt}
-                  fill
-                  unoptimized={film.image.startsWith(
-                    "https://s3.pranapictures.com/",
-                  )}
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+                {film.image ? (
+                  <Image
+                    src={film.image}
+                    alt={film.imageAlt}
+                    fill
+                    unoptimized={film.image.startsWith(
+                      "https://s3.pranapictures.com/",
+                    )}
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                ) : (
+                  <FilmImagePlaceholder title={film.title} />
+                )}
 
                 <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/5" />
               </div>

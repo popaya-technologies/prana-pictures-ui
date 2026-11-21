@@ -2,17 +2,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export default function AboutCTA() {
+import { defaultPageImages, type SiteImage } from "@/data/page-images";
+
+type AboutCTAProps = {
+  // From the admin panel (Page images), or the website's default.
+  image?: SiteImage;
+};
+
+export default function AboutCTA({
+  image = defaultPageImages.about.cta,
+}: AboutCTAProps) {
   return (
     <section className="bg-white py-10 md:py-12">
       <div className="mx-auto grid max-w-[1280px] grid-cols-1 gap-8 px-5 md:px-8 lg:grid-cols-[46%_54%] lg:items-center">
         {/* IMAGE */}
         <div className="relative min-h-[280px] overflow-hidden md:min-h-[340px]">
           <Image
-            src="/images/about/cta.jpg"
-            alt="A still from Bobby"
+            src={image.src}
+            alt={image.alt}
             fill
-            className="object-cover"
+            className={`object-cover ${image.className ?? ""}`}
             sizes="(max-width: 1024px) 100vw, 46vw"
           />
         </div>

@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+
+import FilmImagePlaceholder from "@/components/films/FilmImagePlaceholder";
 import { Play, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -79,17 +81,22 @@ export default function FilmHero({ film }: Props) {
 
   return (
     <section className="relative min-h-[620px] overflow-hidden">
-      <Image
-        src={film.heroImage}
-        alt={`${film.title} film still`}
-        fill
-        priority
-        unoptimized={film.heroImage.startsWith(
-          "https://s3.pranapictures.com/",
-        )}
-        className="object-cover"
-        sizes="100vw"
-      />
+      {film.heroImage ? (
+        <Image
+          src={film.heroImage}
+          alt={`${film.title} film still`}
+          fill
+          priority
+          unoptimized={film.heroImage.startsWith(
+            "https://s3.pranapictures.com/",
+          )}
+          className="object-cover"
+          sizes="100vw"
+        />
+      ) : (
+        // The title is already shown on top of this banner.
+        <FilmImagePlaceholder title={film.title} showTitle={false} />
+      )}
 
       {/* DARK OVERLAY */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-black/10" />

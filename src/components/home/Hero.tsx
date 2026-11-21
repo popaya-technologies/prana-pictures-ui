@@ -5,25 +5,18 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const heroSlides = [
-  {
-    src: "/images/home/hero.jpg",
-    alt: "A scene from Bobby",
-    stretchVertically: true,
-  },
-  {
-    src: "/images/home/choices.jpg",
-    alt: "A scene from Choices",
-  },
-  {
-    src: "/images/home/arrangement.jpg",
-    alt: "A scene from Arrangement",
-  },
-];
+import { defaultPageImages, type SiteImage } from "@/data/page-images";
+
+type HeroProps = {
+  // From the admin panel (Page images), or the website's defaults.
+  slides?: SiteImage[];
+};
 
 const SLIDE_INTERVAL_MS = 4000;
 
-export default function Hero() {
+export default function Hero({ slides }: HeroProps) {
+  const heroSlides =
+    slides && slides.length > 0 ? slides : defaultPageImages.home.heroSlides;
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -41,7 +34,7 @@ export default function Hero() {
     }, SLIDE_INTERVAL_MS);
 
     return () => window.clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, heroSlides.length]);
 
   return (
     <section className="bg-white">
@@ -107,14 +100,14 @@ export default function Hero() {
 
             return (
               <Image
-                key={slide.src}
+                key={`${index}-${slide.src}`}
                 src={slide.src}
                 alt={isActive ? slide.alt : ""}
                 fill
                 preload={index === 0}
                 aria-hidden={!isActive}
                 className={`object-cover transition-opacity duration-1000 ease-in-out ${
-                  slide.stretchVertically ? "scale-y-[1.35]" : ""
+                  slide.className ?? ""
                 } ${isActive ? "opacity-100" : "opacity-0"}`}
                 sizes="(max-width: 1024px) 100vw, 58vw"
               />
@@ -127,7 +120,7 @@ export default function Hero() {
 
               return (
                 <button
-                  key={slide.src}
+                  key={`${index}-${slide.src}`}
                   type="button"
                   aria-label={`Show slide ${index + 1}: ${slide.alt}`}
                   aria-current={isActive ? "true" : undefined}

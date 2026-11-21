@@ -2,7 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Quote } from "lucide-react";
 
-export default function AboutSection() {
+import { defaultPageImages, type SiteImage } from "@/data/page-images";
+
+type AboutSectionProps = {
+  // From the admin panel (Page images), or the website's default.
+  image?: SiteImage;
+};
+
+export default function AboutSection({
+  image = defaultPageImages.home.about,
+}: AboutSectionProps) {
   return (
     <section className="border-t border-neutral-200 bg-[#f7f5f0]">
       <div className="grid grid-cols-1 lg:grid-cols-[42%_58%]">
@@ -66,10 +75,10 @@ export default function AboutSection() {
         {/* RIGHT IMAGE */}
         <div className="relative min-h-[430px] overflow-hidden md:min-h-[520px] lg:min-h-[610px]">
           <Image
-            src="/images/home/about.jpg"
-            alt="A still from Chances"
+            src={image.src}
+            alt={image.alt}
             fill
-            className="object-cover"
+            className={`object-cover ${image.className ?? ""}`}
             sizes="(max-width: 1024px) 100vw, 58vw"
           />
         </div>

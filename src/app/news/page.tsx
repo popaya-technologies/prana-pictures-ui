@@ -13,14 +13,13 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function NewsPage() {
+  // The sample stories in src/data/news.ts are only used when the API is
+  // unreachable. If the API simply has no enabled news, none are shown.
   let stories = newsStories;
 
   try {
     const apiNews = await getPublicNews();
-
-    if (apiNews.length > 0) {
-      stories = mapPublicNewsToStories(apiNews);
-    }
+    stories = mapPublicNewsToStories(apiNews);
   } catch (error) {
     console.error("Unable to load news:", error);
   }
@@ -30,7 +29,7 @@ export default async function NewsPage() {
       <Header />
       <main>
         <NewsHero />
-        <FeaturedNews story={stories[0]} />
+        {stories[0] && <FeaturedNews story={stories[0]} />}
         <NewsFeed stories={stories} />
         <NewsCTA />
       </main>

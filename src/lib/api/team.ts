@@ -6,6 +6,11 @@ export type PublicTeamMember = {
   descriptionHtml?: string;
   email?: string;
   sortOrder: number;
+  // Photo uploaded in the admin panel (full public URL).
+  image?: {
+    url: string;
+    alt?: string;
+  };
 };
 
 type TeamResponse = {

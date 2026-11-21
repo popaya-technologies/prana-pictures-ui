@@ -120,33 +120,23 @@ function mapMedia(media: ApiFilmMedia): FilmMedia {
   };
 }
 
-function mapGallery(
-  apiGallery: ApiFilmGallery | undefined,
-  fallbackGallery: FilmGallery | undefined,
-): FilmGallery {
+function mapGallery(apiGallery: ApiFilmGallery | undefined): FilmGallery {
   return {
-    stills:
-      apiGallery?.stills?.length
-        ? apiGallery.stills.map(mapMedia)
-        : (fallbackGallery?.stills ?? []),
-    bts:
-      apiGallery?.bts?.length
-        ? apiGallery.bts.map(mapMedia)
-        : (fallbackGallery?.bts ?? []),
-    events:
-      apiGallery?.events?.length
-        ? apiGallery.events.map(mapMedia)
-        : (fallbackGallery?.events ?? []),
+    stills: (apiGallery?.stills ?? []).map(mapMedia),
+    bts: (apiGallery?.bts ?? []).map(mapMedia),
+    events: (apiGallery?.events ?? []).map(mapMedia),
   };
 }
 
-export function mapPublicFilmToDisplayFilm(
-  film: PublicFilm,
-  fallback?: Film,
-): Film {
+/**
+ * Turns a film from the API into what the pages display. Uses only what is
+ * saved in the admin panel: nothing is filled in from the built-in copy in
+ * src/data/films.ts (that copy is only used when the API is unreachable).
+ */
+export function mapPublicFilmToDisplayFilm(film: PublicFilm): Film {
   const releaseDate = new Date(film.releaseDate);
   const year = Number.isNaN(releaseDate.getTime())
-    ? (fallback?.year ?? "")
+    ? ""
     : String(releaseDate.getUTCFullYear());
 
   return {
@@ -155,27 +145,21 @@ export function mapPublicFilmToDisplayFilm(
     year,
     type: film.genres.join(" / "),
     duration: `${film.runtimeMinutes} min`,
-    heroImage:
-      film.heroImage?.url ??
-      fallback?.heroImage ??
-      film.poster?.url ??
-      `/images/filmography/${film.slug}.jpg`,
-    tagline:
-      film.shortDescription ?? fallback?.tagline ?? film.title,
-    synopsis:
-      fallback?.synopsis ?? film.shortDescription ?? "",
+    // Landscape spots: hero image first, then the poster.
+    heroImage: film.heroImage?.url ?? film.poster?.url ?? null,
+    tagline: film.shortDescription || film.title,
+    synopsis: film.shortDescription ?? "",
     synopsisHtml: film.descriptionHtml,
-    director: film.directedBy ?? fallback?.director ?? "",
-    writer: film.writtenBy ?? fallback?.writer ?? "",
-    music: film.musicBy ?? fallback?.music ?? "",
-    producers: film.producedBy ?? fallback?.producers ?? "",
-    language: film.language ?? fallback?.language ?? "",
-    basedOn: film.basedOn ?? fallback?.basedOn,
-    cast: film.cast ?? fallback?.cast,
-    imdbUrl: film.imdbUrl ?? fallback?.imdbUrl,
-    letterboxdUrl:
-      film.letterboxdUrl ?? fallback?.letterboxdUrl,
-    trailerUrl: film.trailerUrl ?? fallback?.trailerUrl,
-    gallery: mapGallery(film.gallery, fallback?.gallery),
+    director: film.directedBy ?? "",
+    writer: film.writtenBy ?? "",
+    music: film.musicBy ?? "",
+    producers: film.producedBy ?? "",
+    language: film.language ?? "",
+    basedOn: film.basedOn || undefined,
+    cast: film.cast || undefined,
+    imdbUrl: film.imdbUrl || undefined,
+    letterboxdUrl: film.letterboxdUrl || undefined,
+    trailerUrl: film.trailerUrl || undefined,
+    gallery: mapGallery(film.gallery),
   };
 }

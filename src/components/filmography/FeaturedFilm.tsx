@@ -1,4 +1,6 @@
 import Image from "next/image";
+
+import FilmImagePlaceholder from "@/components/films/FilmImagePlaceholder";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -9,8 +11,8 @@ type FeaturedFilmProps = {
 };
 
 export default function FeaturedFilm({ film }: FeaturedFilmProps) {
-  const isRemoteImage = film.heroImage.startsWith(
-    "https://s3.pranapictures.com/",
+  const isRemoteImage = Boolean(
+    film.heroImage?.startsWith("https://s3.pranapictures.com/"),
   );
 
   return (
@@ -18,14 +20,18 @@ export default function FeaturedFilm({ film }: FeaturedFilmProps) {
       <div className="mx-auto max-w-[1280px] px-5 md:px-8">
         <div className="grid overflow-hidden border border-neutral-200 bg-white lg:grid-cols-[62%_38%]">
           <div className="relative min-h-[360px] md:min-h-[460px]">
-            <Image
-              src={film.heroImage}
-              alt={`${film.title} film still`}
-              fill
-              unoptimized={isRemoteImage}
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 62vw"
-            />
+            {film.heroImage ? (
+              <Image
+                src={film.heroImage}
+                alt={`${film.title} film still`}
+                fill
+                unoptimized={isRemoteImage}
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 62vw"
+              />
+            ) : (
+              <FilmImagePlaceholder title={film.title} />
+            )}
           </div>
 
           <div className="flex items-center px-7 py-10 md:px-10 lg:px-12">

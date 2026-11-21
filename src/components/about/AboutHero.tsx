@@ -2,7 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export default function AboutHero() {
+import { defaultPageImages, type SiteImage } from "@/data/page-images";
+
+type AboutHeroProps = {
+  // From the admin panel (Page images), or the website's defaults.
+  images?: {
+    heroMain: SiteImage;
+    heroLeft: SiteImage;
+    heroRight: SiteImage;
+  };
+};
+
+export default function AboutHero({
+  images = defaultPageImages.about,
+}: AboutHeroProps) {
+  const { heroMain, heroLeft, heroRight } = images;
   return (
     <section className="bg-white">
       <div className="grid min-h-[630px] grid-cols-1 lg:grid-cols-[38%_62%]">
@@ -42,31 +56,31 @@ export default function AboutHero() {
         <div className="grid min-h-[520px] grid-cols-2 grid-rows-2 gap-px bg-white lg:min-h-[630px]">
           <div className="relative col-span-2 overflow-hidden">
             <Image
-              src="/images/about/hero-main.jpg"
-              alt="The Bobby cast at a film screening"
+              src={heroMain.src}
+              alt={heroMain.alt}
               fill
               priority
-              className="object-cover"
+              className={`object-cover ${heroMain.className ?? ""}`}
               sizes="(max-width: 1024px) 100vw, 62vw"
             />
           </div>
 
           <div className="relative overflow-hidden">
             <Image
-              src="/images/about/hero-left.jpg"
-              alt="A still from Bobby"
+              src={heroLeft.src}
+              alt={heroLeft.alt}
               fill
-              className="object-cover scale-[1.08] object-[center_35%]"
+              className={`object-cover ${heroLeft.className ?? ""}`}
               sizes="(max-width: 1024px) 50vw, 31vw"
             />
           </div>
 
           <div className="relative overflow-hidden">
             <Image
-              src="/images/about/hero-right.jpg"
-              alt="A still from Choices"
+              src={heroRight.src}
+              alt={heroRight.alt}
               fill
-              className="object-cover scale-[1.1] object-[center_40%]"
+              className={`object-cover ${heroRight.className ?? ""}`}
               sizes="(max-width: 1024px) 50vw, 31vw"
             />
           </div>

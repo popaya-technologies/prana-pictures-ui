@@ -4,7 +4,8 @@ import { Play } from "lucide-react";
 
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
-import { films as fallbackFilms, getFilmBySlug } from "@/data/films";
+import { films as fallbackFilms } from "@/data/films";
+import FilmImagePlaceholder from "@/components/films/FilmImagePlaceholder";
 import {
   getPublicFilms,
   mapPublicFilmToDisplayFilm,
@@ -18,16 +19,12 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function WatchPage() {
+  // The built-in list is only used when the API is unreachable.
   let films = fallbackFilms;
 
   try {
     const apiFilms = await getPublicFilms();
-
-    if (apiFilms.length > 0) {
-      films = apiFilms.map((film) =>
-        mapPublicFilmToDisplayFilm(film, getFilmBySlug(film.slug)),
-      );
-    }
+    films = apiFilms.map((film) => mapPublicFilmToDisplayFilm(film));
   } catch (error) {
     console.error("Unable to load films for Watch:", error);
   }
@@ -66,16 +63,20 @@ export default async function WatchPage() {
                 aria-label={`Watch the ${film.title} trailer`}
               >
                 <div className="relative aspect-video overflow-hidden bg-neutral-900">
-                  <Image
-                    src={film.heroImage}
-                    alt={`${film.title} trailer`}
-                    fill
-                    unoptimized={film.heroImage.startsWith(
-                      "https://s3.pranapictures.com/",
-                    )}
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                  />
+                  {film.heroImage ? (
+                    <Image
+                      src={film.heroImage}
+                      alt={`${film.title} trailer`}
+                      fill
+                      unoptimized={film.heroImage.startsWith(
+                        "https://s3.pranapictures.com/",
+                      )}
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    />
+                  ) : (
+                    <FilmImagePlaceholder title={film.title} />
+                  )}
                   <div className="absolute inset-0 bg-black/30 transition-colors duration-300 group-hover:bg-black/20" />
                   <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#d99a2b] text-white shadow-lg transition-transform duration-300 group-hover:scale-110">
                     <Play size={23} className="ml-1" fill="currentColor" />

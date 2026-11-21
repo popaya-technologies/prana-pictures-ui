@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import FilmImagePlaceholder from "@/components/films/FilmImagePlaceholder";
 import type { PublicFilm } from "@/lib/api/films";
 
 type FilmCard = {
@@ -9,7 +10,8 @@ type FilmCard = {
   year: string;
   type: string;
   duration: string;
-  image: string;
+  // null = nothing uploaded in the admin panel (a placeholder is shown).
+  image: string | null;
   href: string;
 };
 
@@ -42,6 +44,8 @@ const fallbackFilms: FilmCard[] = [
 
 type SelectedFilmsProps = {
   films?: PublicFilm[];
+  // True when the films API couldn't be reached: show the built-in cards.
+  loadFailed?: boolean;
 };
 
 function toFilmCard(film: PublicFilm): FilmCard {
@@ -55,18 +59,23 @@ function toFilmCard(film: PublicFilm): FilmCard {
     year,
     type: film.genres.join(", "),
     duration: `${film.runtimeMinutes} min`,
-    image:
-      film.poster?.url ??
-      film.heroImage?.url ??
-      `/images/filmography/${film.slug}.jpg`,
+    // Portrait cards: poster first, then the hero image.
+    image: film.poster?.url ?? film.heroImage?.url ?? null,
     href: `/filmography/${film.slug}`,
   };
 }
 
-export default function SelectedFilms({ films = [] }: SelectedFilmsProps) {
-  const filmCards = films.length > 0
-    ? films.map(toFilmCard)
-    : fallbackFilms;
+export default function SelectedFilms({
+  films = [],
+  loadFailed = false,
+}: SelectedFilmsProps) {
+  // Built-in cards only when the API is unreachable, not when it simply
+  // has no enabled films.
+  const filmCards = loadFailed ? fallbackFilms : films.map(toFilmCard);
+
+  if (filmCards.length === 0) {
+    return null;
+  }
 
   return (
     <section className="bg-white py-10 md:py-12">
@@ -99,16 +108,20 @@ export default function SelectedFilms({ films = [] }: SelectedFilmsProps) {
               className="group block w-full max-w-[380px] overflow-hidden border border-neutral-200 bg-white transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(0,0,0,0.1)] lg:max-w-none"
             >
               <div className="relative aspect-[2/3] overflow-hidden bg-[#111]">
-                <Image
-                  src={film.image}
-                  alt={`${film.title} official poster`}
-                  fill
-                  unoptimized={film.image.startsWith(
-                    "https://s3.pranapictures.com/",
-                  )}
-                  className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                  sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                />
+                {film.image ? (
+                  <Image
+                    src={film.image}
+                    alt={`${film.title} official poster`}
+                    fill
+                    unoptimized={film.image.startsWith(
+                      "https://s3.pranapictures.com/",
+                    )}
+                    className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                    sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                  />
+                ) : (
+                  <FilmImagePlaceholder title={film.title} />
+                )}
               </div>
 
               <div className="flex items-center justify-between gap-5 px-5 py-5">

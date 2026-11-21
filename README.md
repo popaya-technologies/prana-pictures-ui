@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Website changes (prana-pictures-ui)
 
-## Getting Started
+Copy everything in this folder over your `prana-pictures-ui` folder (same paths; say yes to replace):
+the `src` folder and `next.config.ts`. No new packages, so no `npm install` needed.
 
-First, run the development server:
+## What changed
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Team, news and page images
+- src/components/about/OurTeam.tsx, src/lib/api/team.ts — every enabled member, each with their own photo
+- src/lib/api/news.ts — news category (tabs) and image
+- src/app/page.tsx, src/app/contact/page.tsx, src/components/home/Hero.tsx, src/components/home/AboutSection.tsx,
+  src/components/about/AboutHero.tsx, src/components/about/AboutCTA.tsx, src/components/contact/ContactHero.tsx,
+  src/components/contact/ContactStory.tsx — images from "Page images" in the admin panel
+- NEW src/data/page-images.ts — the website's default page images (used when nothing is uploaded)
+- NEW src/lib/api/page-images.ts — loads the page images
+- src/app/about/page.tsx — page images; hides "Who we are" / "Our vision" when disabled in the admin panel
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Films: the admin panel is now the only source
+- src/lib/api/films.ts — film pages use only what's saved in the admin panel (no built-in backups mixed in)
+- src/app/filmography/[slug]/page.tsx — a disabled or deleted film shows "page not found"
+- src/app/filmography/page.tsx, src/app/watch/page.tsx, src/components/home/SelectedFilms.tsx,
+  src/components/filmography/FilmographyGrid.tsx, src/components/filmography/FeaturedFilm.tsx,
+  src/components/film-detail/FilmHero.tsx — placeholder when a film has no image; landscape spots use the
+  hero image first, the poster card on Home uses the poster first
+- NEW src/components/films/FilmImagePlaceholder.tsx — the placeholder
+- src/data/films.ts — now only used if the API can't be reached
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Local development
+- next.config.ts (project root, not in src) — lets `npm run dev` load images from s3.pranapictures.com on
+  IPv6-only (NAT64) networks such as mobile hotspots; production is unchanged

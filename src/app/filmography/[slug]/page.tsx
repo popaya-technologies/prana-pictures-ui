@@ -29,22 +29,24 @@ export default async function FilmPage({
 }: FilmPageProps) {
   const { slug } = await params;
 
-  const fallbackFilm = getFilmBySlug(slug);
   let apiFilm = null;
+  let apiFailed = false;
 
   try {
     apiFilm = await getPublicFilmBySlug(slug);
   } catch (error) {
+    apiFailed = true;
     console.error(`Unable to load film ${slug}:`, error);
   }
 
-  if (!apiFilm && !fallbackFilm) {
-    notFound();
-  }
-
+  // API answered: show exactly what the admin panel has. A disabled or
+  // deleted film comes back as 404 → "page not found".
+  // API unreachable: fall back to the built-in copy of the original films.
   const film = apiFilm
-    ? mapPublicFilmToDisplayFilm(apiFilm, fallbackFilm)
-    : fallbackFilm;
+    ? mapPublicFilmToDisplayFilm(apiFilm)
+    : apiFailed
+      ? getFilmBySlug(slug)
+      : undefined;
 
   if (!film) {
     notFound();

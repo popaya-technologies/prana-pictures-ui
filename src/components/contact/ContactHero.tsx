@@ -1,6 +1,15 @@
 import Image from "next/image";
 
-export default function ContactHero() {
+import { defaultPageImages, type SiteImage } from "@/data/page-images";
+
+type ContactHeroProps = {
+  // From the admin panel (Page images), or the website's default.
+  image?: SiteImage;
+};
+
+export default function ContactHero({
+  image = defaultPageImages.contact.hero,
+}: ContactHeroProps) {
   return (
     <section className="bg-white">
       <div className="grid min-h-[560px] grid-cols-1 lg:grid-cols-[42%_58%]">
@@ -25,11 +34,11 @@ export default function ContactHero() {
         {/* RIGHT IMAGE */}
         <div className="relative min-h-[420px] overflow-hidden lg:min-h-[560px]">
           <Image
-            src="/images/home/hero.jpg"
-            alt="A still from Bobby"
+            src={image.src}
+            alt={image.alt}
             fill
             priority
-            className="object-cover"
+            className={`object-cover ${image.className ?? ""}`}
             sizes="(max-width: 1024px) 100vw, 58vw"
           />
         </div>

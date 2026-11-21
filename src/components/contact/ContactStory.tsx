@@ -1,6 +1,15 @@
 import Image from "next/image";
 
-export default function ContactStory() {
+import { defaultPageImages, type SiteImage } from "@/data/page-images";
+
+type ContactStoryProps = {
+  // From the admin panel (Page images), or the website's default.
+  image?: SiteImage;
+};
+
+export default function ContactStory({
+  image = defaultPageImages.contact.story,
+}: ContactStoryProps) {
   return (
     <section className="border-t border-neutral-200 bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-[38%_62%]">
@@ -24,10 +33,10 @@ export default function ContactStory() {
         {/* IMAGE */}
         <div className="relative min-h-[340px] overflow-hidden md:min-h-[420px]">
           <Image
-            src="/images/contact/story.jpg"
-            alt="A still from Choices"
+            src={image.src}
+            alt={image.alt}
             fill
-            className="object-cover"
+            className={`object-cover ${image.className ?? ""}`}
             sizes="(max-width: 1024px) 100vw, 62vw"
           />
         </div>

@@ -26,12 +26,12 @@ export default async function FilmographyPage() {
 
   const featuredApiFilm =
     films.find((film) => film.slug === "bobby") ?? films[0];
-  const featuredFallback = featuredApiFilm
-    ? getFilmBySlug(featuredApiFilm.slug)
-    : getFilmBySlug("bobby");
+  // The built-in copy is only used when the API is unreachable.
   const featuredFilm = featuredApiFilm
-    ? mapPublicFilmToDisplayFilm(featuredApiFilm, featuredFallback)
-    : featuredFallback;
+    ? mapPublicFilmToDisplayFilm(featuredApiFilm)
+    : loadFailed
+      ? getFilmBySlug("bobby")
+      : undefined;
 
   return (
     <>
